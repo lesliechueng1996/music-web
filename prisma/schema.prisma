@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Manager {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  email     String   @unique
+  avatar    String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("t_manager")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  imei      String   @unique
+  username  String   @unique
+  avatar    String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  musics     Music[]
+  musicLists MusicList[]
+
+  @@map("t_user")
+}
+
+model Album {
+  id          String   @id @default(uuid())
+  name        String
+  image       String?
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  musics Music[]
+
+  @@map("t_album")
+}
+
+model Singer {
+  id          String   @id @default(uuid())
+  name        String
+  image       String?
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  musics MusicOnSinger[]
+
+  @@map("t_singer")
+}
+
+model Lyric {
+  id        String   @id @default(uuid())
+  ifFile    Boolean  @default(false) @map("if_file")
+  filePath  String?  @map("file_path")
+  content   String?
+  hashCode  String   @map("hash_code")
+  musicId   String   @unique @map("music_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  music Music @relation(fields: [musicId], references: [id], onDelete: Cascade)
+
+  @@map("t_lyric")
+}
+
+model Music {
+  id              String   @id @default(uuid())
+  name            String
+  filePath        String   @map("file_path")
+  fileHash        String   @map("file_hash")
+  durationSeconds Int      @map("duration_seconds")
+  albumId         String   @map("album_id")
+  userId          String   @map("user_id")
+  isFavorite      Boolean  @default(false) @map("is_favorite")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  isDeleted       Boolean  @default(false) @map("is_deleted")
+
+  album      Album              @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lyric      Lyric?
+  singers    MusicOnSinger[]
+  musicLists MusicOnMusicList[]
+
+  @@map("t_music")
+}
+
+model MusicOnSinger {
+  musicId  String @map("music_id")
+  singerId String @map("singer_id")
+
+  music  Music  @relation(fields: [musicId], references: [id], onDelete: Cascade)
+  singer Singer @relation(fields: [singerId], references: [id], onDelete: Cascade)
+
+  @@id([musicId, singerId])
+  @@map("t_music_on_singer")
+}
+
+model MusicList {
+  id        String   @id @default(uuid())
+  name      String
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  isDeleted Boolean  @default(false) @map("is_deleted")
+
+  musics MusicOnMusicList[]
+  user   User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("t_music_list")
+}
+
+model MusicOnMusicList {
+  musicId     String @map("music_id")
+  musicListId String @map("music_list_id")
+
+  music     Music     @relation(fields: [musicId], references: [id], onDelete: Cascade)
+  musicList MusicList @relation(fields: [musicListId], references: [id], onDelete: Cascade)
+
+  @@id([musicId, musicListId])
+  @@map("t_music_on_music_list")
+}
