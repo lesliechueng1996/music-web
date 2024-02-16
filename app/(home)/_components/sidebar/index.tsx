@@ -10,7 +10,7 @@ const menus = [
   {
     label: '用户管理',
     icon: UserCog,
-    href: '/console/user',
+    href: '/user',
   },
 ];
 

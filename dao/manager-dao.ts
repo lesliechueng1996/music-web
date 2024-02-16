@@ -16,7 +16,7 @@ export const getManagerById = async (id: string) => {
   });
 };
 
-export const createManager = async ({
+export const saveManager = async ({
   username,
   password,
   email,

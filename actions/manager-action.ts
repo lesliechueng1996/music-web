@@ -1,11 +1,11 @@
 'use server';
 
-import { createManager } from '@/dao/manager-dao';
+import { saveManager } from '@/dao/manager-dao';
 import { hash } from 'bcrypt';
 
-export const registerManager = async (param: Parameters<typeof createManager>[0]) => {
+export const registerManager = async (param: Parameters<typeof saveManager>[0]) => {
   const hashPassword = await hash(param.password, 10);
-  return createManager({
+  return saveManager({
     ...param,
     password: hashPassword,
   });
