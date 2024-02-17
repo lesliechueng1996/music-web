@@ -14,9 +14,10 @@ type Props = {
   trigger: ReactNode;
   title: string;
   children: ReactNode;
+  contentClass?: string;
 };
 
-function ModalDialog({ trigger, title, children }: Props) {
+function ModalDialog({ trigger, title, children, contentClass }: Props) {
   const { value, setFalse, setValue } = useBoolean(false);
 
   const context = {
@@ -27,7 +28,7 @@ function ModalDialog({ trigger, title, children }: Props) {
     <ModalDialogContext.Provider value={context}>
       <Dialog open={value} onOpenChange={setValue}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
-        <DialogContent>
+        <DialogContent className={contentClass}>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
           </DialogHeader>
