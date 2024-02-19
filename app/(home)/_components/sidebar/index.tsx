@@ -1,4 +1,4 @@
-import { LayoutDashboard, UserCog, Disc3 } from 'lucide-react';
+import { LayoutDashboard, UserCog, Disc3, Mic2 } from 'lucide-react';
 import MenuItem from './MenuItem';
 
 const menus = [
@@ -16,6 +16,11 @@ const menus = [
     label: '专辑管理',
     icon: Disc3,
     href: '/album',
+  },
+  {
+    label: '歌手管理',
+    icon: Mic2,
+    href: '/singer',
   },
 ];
 

@@ -1,10 +1,10 @@
 'use client';
 
-import { Album } from './data-type';
+import { Singer } from './data-type';
 import { CellContext } from '@tanstack/react-table';
 import SeeImage from '@/components/SeeImage';
 
-const ImageCell = <TValue,>(data: CellContext<Album, TValue>) => {
+const ImageCell = <TValue,>(data: CellContext<Singer, TValue>) => {
   const {
     row: { original },
   } = data;
