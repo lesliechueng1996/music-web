@@ -64,6 +64,7 @@ model Singer {
 
 model Lyric {
   id        String   @id @default(uuid())
+  name      String
   ifFile    Boolean  @default(false) @map("if_file")
   filePath  String?  @map("file_path")
   content   String?
