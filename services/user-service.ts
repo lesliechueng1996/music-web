@@ -1,4 +1,4 @@
-import { getUserByPage } from '@/dao/user-dao';
+import { getAllUsers, getUserByPage } from '@/dao/user-dao';
 import { PaginationAndOrder } from '@/lib/common';
 import { generatePageAndOrderQuery, isPageValidated } from '@/lib/query-builder';
 import toDateString from '@/lib/toDateString';
@@ -43,4 +43,12 @@ export const searchUserPage = async ({
       createdAt: toDateString(item.createdAt),
     })),
   };
+};
+
+export const getUserOptions = async () => {
+  const allUsers = await getAllUsers();
+  return allUsers.map((user) => ({
+    id: user.id,
+    username: user.username,
+  }));
 };

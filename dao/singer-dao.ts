@@ -87,3 +87,7 @@ export const updateSingerImageById = async (id: string, image: string) => {
     },
   });
 };
+
+export const getAllSingers = async () => {
+  return prisma.singer.findMany();
+};

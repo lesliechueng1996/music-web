@@ -2,6 +2,7 @@
 
 import {
   deleteSingerById,
+  getAllSingers,
   getSingerById,
   saveSinger,
   updateSingerImageById,
@@ -49,4 +50,12 @@ export const getUploadSingerImgToken = async (fileName: string | null) => {
 export const updateSingerImage = async (id: string, image: string) => {
   await updateSingerImageById(id, image);
   revalidatePath('/singer');
+};
+
+export const getSingerOptions = async () => {
+  const singers = await getAllSingers();
+  return singers.map((singer) => ({
+    label: singer.name,
+    value: singer.id,
+  }));
 };

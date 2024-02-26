@@ -84,3 +84,7 @@ export const updateAlbumImageById = async (id: string, image: string) => {
     },
   });
 };
+
+export const getAllAlbums = async () => {
+  return prisma.album.findMany();
+};

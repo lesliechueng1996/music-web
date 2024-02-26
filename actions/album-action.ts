@@ -1,6 +1,13 @@
 'use server';
 
-import { deleteAlbumById, getAlbumById, saveAlbum, updateAlbumImageById, updateAlbumInfoById } from '@/dao/album-dao';
+import {
+  deleteAlbumById,
+  getAlbumById,
+  getAllAlbums,
+  saveAlbum,
+  updateAlbumImageById,
+  updateAlbumInfoById,
+} from '@/dao/album-dao';
 import { createUploadToken, deleteFile } from '@/lib/qiniu-server';
 import { revalidatePath } from 'next/cache';
 
@@ -43,4 +50,12 @@ export const getUploadAlbumImgToken = async (fileName: string | null) => {
 export const updateAlbumImage = async (id: string, image: string) => {
   await updateAlbumImageById(id, image);
   revalidatePath('/album');
+};
+
+export const getAlbumOptions = async () => {
+  const albums = await getAllAlbums();
+  return albums.map((album) => ({
+    label: album.name,
+    value: album.id,
+  }));
 };

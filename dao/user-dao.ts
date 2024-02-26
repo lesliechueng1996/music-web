@@ -62,3 +62,5 @@ export const deleteUserById = async (id: string) => {
     },
   });
 };
+
+export const getAllUsers = async () => prisma.user.findMany();
