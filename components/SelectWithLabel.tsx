@@ -21,7 +21,7 @@ const SelectWithLabel = ({ label, name, options, placeholder }: Props) => {
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <Label htmlFor={id}>{label}</Label>
       <div className="flex items-center gap-2">
-        <Select>
+        <Select name={name}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder={placeholder} />
           </SelectTrigger>

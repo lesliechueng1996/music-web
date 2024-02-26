@@ -9,12 +9,13 @@ export const saveMusic = async (param: {
   userId: string;
   singerIds: string[];
 }) => {
+  const { singerIds, ...rest } = param;
   return prisma.music.create({
     data: {
-      ...param,
+      ...rest,
       singers: {
         createMany: {
-          data: param.singerIds.map((id) => ({ singerId: id })),
+          data: singerIds.map((id) => ({ singerId: id })),
         },
       },
     },

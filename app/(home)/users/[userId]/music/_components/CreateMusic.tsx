@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react';
 import { useModalDialog } from '@/components/ModalDialog';
 import { toast } from 'sonner';
 import MusicInfoForm, { type FormData } from './MusicInfoForm';
-import MusicFileForm from './MusicFileForm';
+import MusicFileForm, { MusicFileProps } from './MusicFileForm';
 import { createMusic } from '@/actions/music-action';
 import { useParams } from 'next/navigation';
 
@@ -14,13 +14,20 @@ const CreateMusic = () => {
   const params = useParams<{ userId: string }>();
   const { closeDialog } = useModalDialog();
 
-  const handleCreateMusic = (key: string, hash: string, durationSeconds: number) => {
+  const handleCreateMusic = (uploadMusicFn: () => Promise<MusicFileProps>) => {
     if (!musicInfo) {
       return;
     }
     startTransition(async () => {
       try {
-        await createMusic({ ...musicInfo, filePath: key, fileHash: hash, durationSeconds, userId: params.userId });
+        const { key, hash, duration } = await uploadMusicFn();
+        await createMusic({
+          ...musicInfo,
+          filePath: key,
+          fileHash: hash,
+          durationSeconds: duration,
+          userId: params.userId,
+        });
         closeDialog();
         toast.success('创建成功');
       } catch (e) {
