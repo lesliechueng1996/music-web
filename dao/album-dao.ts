@@ -88,3 +88,16 @@ export const updateAlbumImageById = async (id: string, image: string) => {
 export const getAllAlbums = async () => {
   return prisma.album.findMany();
 };
+
+export const getAllAlbumByUserId = async (userId: string) => {
+  return prisma.album.findMany({
+    distinct: ['id'],
+    where: {
+      musics: {
+        some: {
+          userId,
+        },
+      },
+    },
+  });
+};

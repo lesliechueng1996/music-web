@@ -3,6 +3,7 @@
 import {
   deleteAlbumById,
   getAlbumById,
+  getAllAlbumByUserId,
   getAllAlbums,
   saveAlbum,
   updateAlbumImageById,
@@ -54,6 +55,14 @@ export const updateAlbumImage = async (id: string, image: string) => {
 
 export const getAlbumOptions = async () => {
   const albums = await getAllAlbums();
+  return albums.map((album) => ({
+    label: album.name,
+    value: album.id,
+  }));
+};
+
+export const getAlbumOptionsByUserId = async (userId: string) => {
+  const albums = await getAllAlbumByUserId(userId);
   return albums.map((album) => ({
     label: album.name,
     value: album.id,

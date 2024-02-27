@@ -18,11 +18,11 @@ export type MusicFileProps = {
 type Props = {
   name: string;
   isLoading: boolean;
-  key: string | null;
+  fileKey: string | null;
   onUploadFinish: (uploadMusicFn: () => Promise<MusicFileProps>) => void;
 };
 
-const MusicFileForm = ({ name, key, onUploadFinish, isLoading }: Props) => {
+const MusicFileForm = ({ name, fileKey, onUploadFinish, isLoading }: Props) => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     const formElm = e.target as HTMLFormElement;
     const formData = new FormData(formElm);
@@ -31,9 +31,9 @@ const MusicFileForm = ({ name, key, onUploadFinish, isLoading }: Props) => {
     const fileName = `${name}.${suffix}`;
 
     const uploadMusic = async () => {
-      const token = await getUploadMusicToken(key);
+      const token = await getUploadMusicToken(fileKey);
       return new Promise<MusicFileProps>((resolve, reject) => {
-        const observable = qiniu.upload(file, key, token, {
+        const observable = qiniu.upload(file, fileKey, token, {
           fname: fileName,
         });
         observable.subscribe({

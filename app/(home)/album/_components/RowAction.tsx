@@ -46,7 +46,7 @@ function RowAction<TValue>(data: CellContext<Album, TValue>) {
       </ModalDialog>
       <ConfirmDelete
         onDeleteConfirm={async () => {
-          removeAlbum(original.id);
+          await removeAlbum(original.id);
         }}
         description="是否确认此专辑, 将会删除相关歌曲?"
       />

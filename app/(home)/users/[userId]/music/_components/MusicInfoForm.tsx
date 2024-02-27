@@ -66,8 +66,14 @@ const MusicInfoForm = ({ initData, onSubmit, isLoading }: Props) => {
   return (
     <DialogForm onSubmit={handleSubmit}>
       <InputWithLabel name="name" label="歌曲名" maxLength={32} required defaultValue={initData?.name ?? ''} />
-      <SelectWithLabel name="albumId" label="所属专辑" options={albumOptions} />
-      <ComboboxWithLabel name="singerIds" label="歌手" options={singerOptions} placeholder="请选择歌手" />
+      <SelectWithLabel name="albumId" label="所属专辑" options={albumOptions} defaultValue={initData?.albumId ?? ''} />
+      <ComboboxWithLabel
+        name="singerIds"
+        label="歌手"
+        options={singerOptions}
+        placeholder="请选择歌手"
+        defaultValue={initData?.singerIds}
+      />
       <div className="text-right">
         <LoadingButton text="下一步" isLoading={isLoading} type="submit" />
       </div>

@@ -40,7 +40,9 @@ const CreateMusic = () => {
     return <MusicInfoForm onSubmit={setMusicInfo} isLoading={false} />;
   }
 
-  return <MusicFileForm name={musicInfo.name} key={null} isLoading={isPending} onUploadFinish={handleCreateMusic} />;
+  return (
+    <MusicFileForm name={musicInfo.name} fileKey={null} isLoading={isPending} onUploadFinish={handleCreateMusic} />
+  );
 };
 
 export default CreateMusic;

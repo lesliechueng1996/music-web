@@ -3,6 +3,7 @@
 import {
   deleteSingerById,
   getAllSingers,
+  getAllSingersByUserId,
   getSingerById,
   saveSinger,
   updateSingerImageById,
@@ -54,6 +55,14 @@ export const updateSingerImage = async (id: string, image: string) => {
 
 export const getSingerOptions = async () => {
   const singers = await getAllSingers();
+  return singers.map((singer) => ({
+    label: singer.name,
+    value: singer.id,
+  }));
+};
+
+export const getSingerOptionsByUserId = async (userId: string) => {
+  const singers = await getAllSingersByUserId(userId);
   return singers.map((singer) => ({
     label: singer.name,
     value: singer.id,

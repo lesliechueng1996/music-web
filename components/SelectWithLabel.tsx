@@ -12,16 +12,17 @@ type Props = {
     value: string;
   }>;
   placeholder?: string;
+  defaultValue?: string;
 };
 
-const SelectWithLabel = ({ label, name, options, placeholder }: Props) => {
+const SelectWithLabel = ({ label, name, options, placeholder, defaultValue }: Props) => {
   const id = `${name}-${useId()}}`;
 
   return (
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <Label htmlFor={id}>{label}</Label>
       <div className="flex items-center gap-2">
-        <Select name={name}>
+        <Select name={name} defaultValue={defaultValue}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder={placeholder} />
           </SelectTrigger>

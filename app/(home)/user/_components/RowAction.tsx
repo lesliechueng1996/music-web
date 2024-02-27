@@ -16,7 +16,7 @@ function RowAction<TValue>(data: CellContext<User, TValue>) {
       <Button variant="secondary">编辑</Button>
       <ConfirmDelete
         onDeleteConfirm={async () => {
-          removeUser(original.id);
+          await removeUser(original.id);
         }}
         description="是否确认此用户?"
       />

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Badge } from './ui/badge';
 
 export type Option = {
@@ -18,11 +18,18 @@ type Props = {
   id: string;
   name: string;
   options: Option[];
+  defaultValue?: string[];
 };
 
-export default function Combobox({ placeholder, options, ...inputProps }: Props) {
+export default function Combobox({ placeholder, options, defaultValue, ...inputProps }: Props) {
   const [open, setOpen] = useState(false);
   const [selectList, setSelectList] = useState<Option[]>([]);
+
+  useEffect(() => {
+    if (defaultValue) {
+      setSelectList(options.filter((option) => defaultValue.includes(option.value)));
+    }
+  }, [defaultValue, options]);
 
   const handleSelectItem = (selectValue: string) => {
     if (selectList.find((item) => item.value === selectValue)) {

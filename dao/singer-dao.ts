@@ -91,3 +91,18 @@ export const updateSingerImageById = async (id: string, image: string) => {
 export const getAllSingers = async () => {
   return prisma.singer.findMany();
 };
+
+export const getAllSingersByUserId = async (userId: string) => {
+  return prisma.singer.findMany({
+    distinct: ['id'],
+    where: {
+      musics: {
+        some: {
+          music: {
+            userId,
+          },
+        },
+      },
+    },
+  });
+};

@@ -17,14 +17,28 @@ import LoadingButton from './LoadingButton';
 import { toast } from 'sonner';
 
 type Props = {
+  canSoftDelete?: boolean;
   onDeleteConfirm: () => Promise<void>;
+  onSoftDeleteConfirm?: () => Promise<void>;
   description?: string;
 };
 
-function ConfirmDelete({ onDeleteConfirm, description }: Props) {
+function ConfirmDelete({ canSoftDelete = false, onDeleteConfirm, onSoftDeleteConfirm, description }: Props) {
   const { value, setFalse, setValue } = useBoolean(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+  const handleSoftDeleteConfirm = () => {
+    startTransition(async () => {
+      try {
+        onSoftDeleteConfirm && (await onSoftDeleteConfirm());
+        setFalse();
+        router.refresh();
+      } catch (e) {
+        toast.error('删除失败');
+      }
+    });
+  };
 
   const handleComfirm = () => {
     startTransition(async () => {
@@ -55,6 +69,15 @@ function ConfirmDelete({ onDeleteConfirm, description }: Props) {
                 取消
               </Button>
             </DialogClose>
+            {canSoftDelete && (
+              <LoadingButton
+                type="button"
+                variant="secondary"
+                onClick={handleSoftDeleteConfirm}
+                text="软删除"
+                isLoading={isPending}
+              />
+            )}
             <LoadingButton
               type="button"
               variant="destructive"

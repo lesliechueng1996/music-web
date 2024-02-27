@@ -29,19 +29,19 @@ const EditSinger = ({ id }: Props) => {
     fetchSingerInfo();
   }, [id, closeDialog]);
 
-  const handleCreateSinger = (data: FormData) => {
+  const handleEditSinger = (data: FormData) => {
     startTransition(async () => {
       try {
         await updateSingerInfo(id, data);
         closeDialog();
-        toast.success('创建成功');
+        toast.success('编辑成功');
       } catch (e) {
-        toast.error('创建失败');
+        toast.error('编辑失败');
       }
     });
   };
 
-  return singer ? <SingerForm initData={singer} isLoading={isPending} onSubmit={handleCreateSinger} /> : null;
+  return singer ? <SingerForm initData={singer} isLoading={isPending} onSubmit={handleEditSinger} /> : null;
 };
 
 export default EditSinger;
