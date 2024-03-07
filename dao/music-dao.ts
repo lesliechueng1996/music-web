@@ -111,7 +111,13 @@ export const getMusicById = async (id: string) => {
       id,
     },
     include: {
-      singers: true,
+      singers: {
+        include: {
+          singer: true,
+        },
+      },
+      album: true,
+      lyric: true,
     },
   });
 };

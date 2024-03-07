@@ -1,4 +1,4 @@
-import { getMusicByPage } from '@/dao/music-dao';
+import { getMusicById, getMusicByPage } from '@/dao/music-dao';
 import { PaginationAndOrder } from '@/lib/common';
 import { generatePageAndOrderQuery, isPageValidated } from '@/lib/query-builder';
 import toDateString from '@/lib/toDateString';
@@ -62,4 +62,9 @@ export const searchMusicPage = async ({
       })),
     })),
   };
+};
+
+export const getMusicAndRelationById = async (id: string) => {
+  const music = await getMusicById(id);
+  return music;
 };

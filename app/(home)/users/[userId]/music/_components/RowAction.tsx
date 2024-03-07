@@ -40,7 +40,7 @@ const RowAction = <TValue,>(data: CellContext<Music, TValue>) => {
       <ModalDialog trigger={<Button variant="outline">上传歌曲</Button>} title="上传歌曲">
         <UploadMusic id={original.id} />
       </ModalDialog>
-      <Link href={`/musics/${original.id}/lyric`}>
+      <Link href={`/musics/${original.id}/lyric`} target="_blank">
         <Button>编辑歌词</Button>
       </Link>
       <ConfirmDelete
