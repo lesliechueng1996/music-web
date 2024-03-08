@@ -1,4 +1,7 @@
+'use client';
+
 import DiscPlaying from '@/components/DiscPlaying';
+import useAudioPlayingStatus from '@/hooks/useAudioPlayingStatus';
 
 type Props = {
   name: string;
@@ -8,9 +11,11 @@ type Props = {
 };
 
 const MusicInfo = ({ name, singerNames, albumName, albumImgUrl }: Props) => {
+  const isPlaying = useAudioPlayingStatus();
+
   return (
     <div className="flex flex-col items-center max-w-xl space-y-3">
-      <DiscPlaying isPlaying={true} imageUrl={albumImgUrl} />
+      <DiscPlaying isPlaying={isPlaying} imageUrl={albumImgUrl} />
       <p>歌曲名: {name}</p>
       <p>歌手: {singerNames.join(' ')}</p>
       <p>专辑: {albumName}</p>

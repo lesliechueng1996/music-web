@@ -1,36 +1,65 @@
 'use client';
 
+import ModalDialog from '@/components/ModalDialog';
 import MusicProcess from '@/components/MusicProcess';
 import PlayAndPauseBtn from '@/components/PlayAndPauseBtn';
 import VoiceControl from '@/components/VolumeControl';
-import { BetweenHorizonalStart } from 'lucide-react';
-import { useBoolean } from 'usehooks-ts';
+import { Button } from '@/components/ui/button';
+import useAudio from '@/hooks/useAudio';
+import { BetweenHorizonalStart, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import InsertLyricForm from './InsertLyricForm';
 
-const MusicControl = () => {
-  const { value: isPlaying, setTrue: startPlaying, setFalse: stopPlaying, toggle: togglePlaying } = useBoolean(false);
+type Props = {
+  url: string;
+};
+
+const initVolume = 0.5;
+
+const MusicControl = ({ url }: Props) => {
+  const {
+    isLoading,
+    isPlaying,
+    startPlaying,
+    stopPlaying,
+    togglePlaying,
+    currentTime,
+    duration,
+    handleProcessMove,
+    handleProcessCommit,
+    handleVolumeChange,
+    fastForward,
+    fastBackward,
+    getCurrentTime,
+  } = useAudio(url, initVolume);
 
   return (
-    <div className="flex items-center gap-5 w-full">
-      <PlayAndPauseBtn onClick={togglePlaying} isPlaying={isPlaying} />
+    <div className="flex items-center w-full">
+      <Button variant="ghost" disabled={isLoading} onClick={() => fastBackward(5)}>
+        <ChevronsLeft size={32} />
+      </Button>
+      <PlayAndPauseBtn onClick={togglePlaying} isPlaying={isPlaying} disabled={isLoading} />
+      <Button variant="ghost" disabled={isLoading} onClick={() => fastForward(5)}>
+        <ChevronsRight size={32} />
+      </Button>
       <MusicProcess
         className="grow"
-        durationSeconds={200}
-        isPlaying={isPlaying}
-        onMove={() => {
-          if (isPlaying) {
-            stopPlaying();
-          }
-        }}
-        onCommit={() => {
-          if (!isPlaying) {
-            startPlaying();
-          }
-        }}
+        currentTime={currentTime}
+        durationSeconds={duration}
+        disabled={isLoading}
+        onMove={handleProcessMove}
+        onCommit={handleProcessCommit}
       />
-      <VoiceControl onVolumeChange={() => {}} />
-      <button>
-        <BetweenHorizonalStart size={32} />
-      </button>
+      <VoiceControl defaultVolume={initVolume * 100} onVolumeChange={handleVolumeChange} disabled={isLoading} />
+      <ModalDialog
+        title="插入歌词"
+        trigger={
+          <Button variant="ghost" disabled={isLoading} onClick={() => stopPlaying()}>
+            <BetweenHorizonalStart size={32} />
+          </Button>
+        }
+      >
+        <InsertLyricForm getCurrentTime={getCurrentTime} onFinished={startPlaying} />
+      </ModalDialog>
     </div>
   );
 };
