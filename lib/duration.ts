@@ -33,3 +33,8 @@ export const lyricTimeToSeconds = (lyricTime: string) => {
   const [minutes, seconds] = minAndSec.split(':').map((time) => parseInt(time, 10));
   return minutes * 60 + seconds + parseInt(milliseconds, 10) / 100;
 };
+
+// mm:ss.SS
+export const isValidLyricTime = (lyricTime: string) => {
+  return /^([0-5]\d):([0-5]\d)\.\d{2}$/.test(lyricTime);
+};

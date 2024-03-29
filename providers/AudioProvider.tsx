@@ -22,6 +22,7 @@ type AudioContextType = {
   lyricLines: LyricLine[];
   insertLyricLine: (line: Omit<LyricLine, 'id'>) => void;
   removeLyricLine: (id: string) => void;
+  putLyricLines: (lines: Omit<LyricLine, 'id'>[]) => void;
 };
 
 export const AudioContext = createContext<AudioContextType | null>(null);
@@ -36,18 +37,15 @@ const AudioProvider = ({ children }: Props) => {
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const playAt = useCallback(
-    (time: number) => {
-      setCurrentTime(time);
-      if (audioRef.current) {
-        audioRef.current.currentTime = time;
-      }
-      if (!isPlaying) {
-        startPlaying();
-      }
-    },
-    [isPlaying, startPlaying]
-  );
+  const playAt = (time: number) => {
+    setCurrentTime(time);
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+    }
+    if (!isPlaying) {
+      startPlaying();
+    }
+  };
 
   const insertLyricLine = (line: Omit<LyricLine, 'id'>) => {
     setLyricLines((prev) =>
@@ -65,6 +63,17 @@ const AudioProvider = ({ children }: Props) => {
     setLyricLines((prev) => prev.filter((line) => line.id !== id));
   };
 
+  const putLyricLines = (lines: Omit<LyricLine, 'id'>[]) => {
+    setLyricLines(
+      lines
+        .map((line) => ({
+          ...line,
+          id: nanoid(),
+        }))
+        .toSorted((a, b) => a.time.localeCompare(b.time))
+    );
+  };
+
   return (
     <AudioContext.Provider
       value={{
@@ -79,6 +88,7 @@ const AudioProvider = ({ children }: Props) => {
         lyricLines,
         insertLyricLine,
         removeLyricLine,
+        putLyricLines,
       }}
     >
       {children}

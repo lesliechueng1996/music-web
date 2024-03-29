@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LyricLineList from './LyricLineList';
 import PreviewLyric from './PreviewLyric';
+import EditLyric from './EditLyric';
 
 const LyricPanel = () => {
   return (
@@ -17,7 +18,7 @@ const LyricPanel = () => {
         <PreviewLyric />
       </TabsContent>
       <TabsContent value="edit" className="h-full">
-        Change your password here.
+        <EditLyric />
       </TabsContent>
     </Tabs>
   );
