@@ -4,12 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import useLyric from '@/hooks/useLyric';
 import { isValidLyricTime } from '@/lib/duration';
+import { joinLyricLines } from '@/lib/lyric';
 import { FormEventHandler } from 'react';
 import { toast } from 'sonner';
 
 const EditLyric = () => {
   const { lyricLines, putLyricLines } = useLyric();
-  const plainText = lyricLines.map((line) => `[${line.time}]${line.text}`).join('\n');
+  const plainText = joinLyricLines(lyricLines);
 
   const handleFormSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();

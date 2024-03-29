@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import MusicControl from './_components/MusicControl';
 import LyricPanel from './_components/LyricPanel';
 import AudioProvider from '@/providers/AudioProvider';
+import SaveLyricButton from './_components/SaveLyricButton';
 
 type Props = {
   params: {
@@ -24,18 +25,21 @@ const MusicLyricPage = async ({ params: { id } }: Props) => {
 
   return (
     <AudioProvider>
-      <div className="flex gap-5">
-        <div className="flex flex-col items-center gap-8 w-0 grow">
-          <MusicInfo
-            name={name}
-            singerNames={singers.map((singer) => singer.singer.name)}
-            albumName={album.name}
-            albumImgUrl={album.image ? `${imageUrlPrefix}/${album.image}` : null}
-          />
-          <MusicControl url="http://localhost:3000/test.mp3" />
-        </div>
-        <div className="w-0 grow">
-          <LyricPanel />
+      <div className="space-y-5">
+        <SaveLyricButton />
+        <div className="flex gap-5">
+          <div className="flex flex-col items-center gap-8 w-0 grow">
+            <MusicInfo
+              name={name}
+              singerNames={singers.map((singer) => singer.singer.name)}
+              albumName={album.name}
+              albumImgUrl={album.image ? `${imageUrlPrefix}/${album.image}` : null}
+            />
+            <MusicControl url="http://localhost:3000/test.mp3" />
+          </div>
+          <div className="w-0 grow">
+            <LyricPanel />
+          </div>
         </div>
       </div>
     </AudioProvider>
