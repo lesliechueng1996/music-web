@@ -7,10 +7,11 @@ import useAudioPlaying from './useAudioPlaying';
 const useAudio = (url: string, initVolumePercent: number) => {
   const { value: isLoading, setFalse: loadFinished } = useBoolean(true);
   // const { value: isPlaying, setTrue: startPlaying, setFalse: stopPlaying, toggle: togglePlaying } = useBoolean(false);
-  const { isPlaying, startPlaying, stopPlaying, togglePlaying } = useAudioPlaying();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { audioRef, isPlaying, startPlaying, stopPlaying, togglePlaying, currentTime, setCurrentTime, playAt } =
+    useAudioPlaying();
+  // const audioRef = useRef<HTMLAudioElement | null>(null);
   const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
+  // const [currentTime, setCurrentTime] = useState(0);
 
   const syncCurrentTime = () => {
     setCurrentTime(Math.round(audioRef.current?.currentTime || 0));
@@ -54,7 +55,7 @@ const useAudio = (url: string, initVolumePercent: number) => {
       audioRef.current?.pause();
       audioRef.current?.remove();
     };
-  }, [url, initVolumePercent, loadFinished, stopPlaying]);
+  }, [url, initVolumePercent, loadFinished, stopPlaying, setCurrentTime, audioRef]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -62,7 +63,7 @@ const useAudio = (url: string, initVolumePercent: number) => {
     } else {
       audioRef.current?.pause();
     }
-  }, [isPlaying]);
+  }, [isPlaying, audioRef]);
 
   const handleProcessMove = (time: number) => {
     if (isPlaying) {
@@ -72,13 +73,7 @@ const useAudio = (url: string, initVolumePercent: number) => {
   };
 
   const handleProcessCommit = (time: number) => {
-    setCurrentTime(time);
-    if (audioRef.current) {
-      audioRef.current.currentTime = time;
-    }
-    if (!isPlaying) {
-      startPlaying();
-    }
+    playAt(time);
   };
 
   const handleVolumeChange = (volumePercent: number) => {
