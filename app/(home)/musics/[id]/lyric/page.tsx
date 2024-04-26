@@ -38,7 +38,7 @@ const MusicLyricPage = async ({ params: { id } }: Props) => {
             <MusicControl url="http://localhost:3000/test.mp3" />
           </div>
           <div className="w-0 grow">
-            <LyricPanel />
+            <LyricPanel lyricContent={music.lyric?.content ?? null} />
           </div>
         </div>
       </div>

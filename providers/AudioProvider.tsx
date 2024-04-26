@@ -1,8 +1,9 @@
 'use client';
 
-import { ReactNode, createContext, useCallback, useRef, useState } from 'react';
+import { ReactNode, createContext, useRef, useState } from 'react';
 import { useBoolean } from 'usehooks-ts';
 import { nanoid } from 'nanoid';
+import { parseLyric, joinLyricLines } from '@/lib/lyric';
 
 type LyricLine = {
   id: string;
@@ -23,6 +24,8 @@ type AudioContextType = {
   insertLyricLine: (line: Omit<LyricLine, 'id'>) => void;
   removeLyricLine: (id: string) => void;
   putLyricLines: (lines: Omit<LyricLine, 'id'>[]) => void;
+  loadLyric: (lyric: string) => void;
+  getLyricString: () => string;
 };
 
 export const AudioContext = createContext<AudioContextType | null>(null);
@@ -74,6 +77,20 @@ const AudioProvider = ({ children }: Props) => {
     );
   };
 
+  const loadLyric = (lyric: string) => {
+    const parsedLyric = parseLyric(lyric);
+    setLyricLines(
+      parsedLyric.map((line) => ({
+        ...line,
+        id: nanoid(),
+      }))
+    );
+  };
+
+  const getLyricString = () => {
+    return joinLyricLines(lyricLines);
+  };
+
   return (
     <AudioContext.Provider
       value={{
@@ -89,6 +106,8 @@ const AudioProvider = ({ children }: Props) => {
         insertLyricLine,
         removeLyricLine,
         putLyricLines,
+        loadLyric,
+        getLyricString,
       }}
     >
       {children}

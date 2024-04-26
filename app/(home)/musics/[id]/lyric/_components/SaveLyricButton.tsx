@@ -4,14 +4,13 @@ import { saveTextLyric } from '@/actions/lyric-action';
 import LoadingButton from '@/components/LoadingButton';
 import { Input } from '@/components/ui/input';
 import useLyric from '@/hooks/useLyric';
-import { joinLyricLines } from '@/lib/lyric';
 import { useParams } from 'next/navigation';
 import { FormEventHandler, useTransition } from 'react';
 import { toast } from 'sonner';
 
 const SaveLyricButton = () => {
   const [isPending, startTransition] = useTransition();
-  const { lyricLines } = useLyric();
+  const { getLyricString } = useLyric();
   const params = useParams<{ id: string }>();
 
   const handleOnSave: FormEventHandler<HTMLFormElement> = (e) => {
@@ -19,7 +18,7 @@ const SaveLyricButton = () => {
     const formData = new FormData(e.currentTarget);
     const lyricName = formData.get('lyricName') as string;
     const musicId = params.id;
-    const plainText = joinLyricLines(lyricLines);
+    const plainText = getLyricString();
 
     startTransition(async () => {
       try {

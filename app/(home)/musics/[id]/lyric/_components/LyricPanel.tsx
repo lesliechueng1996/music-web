@@ -1,9 +1,25 @@
+'use client';
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LyricLineList from './LyricLineList';
 import PreviewLyric from './PreviewLyric';
 import EditLyric from './EditLyric';
+import useLyric from '@/hooks/useLyric';
+import { useEffect } from 'react';
 
-const LyricPanel = () => {
+type Props = {
+  lyricContent: string | null;
+};
+
+const LyricPanel = ({ lyricContent }: Props) => {
+  const { loadLyric } = useLyric();
+
+  useEffect(() => {
+    if (lyricContent) {
+      loadLyric(lyricContent);
+    }
+  }, []);
+
   return (
     <Tabs defaultValue="insert" className="w-full h-full">
       <TabsList className="grid w-full grid-cols-3">

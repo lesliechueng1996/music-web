@@ -10,9 +10,9 @@ const useLyric = () => {
     throw new Error('useLyric must be used within an AudioProvider');
   }
 
-  const { lyricLines, insertLyricLine, removeLyricLine, putLyricLines } = audioContext;
+  const { lyricLines, insertLyricLine, removeLyricLine, putLyricLines, loadLyric, getLyricString } = audioContext;
 
-  return { lyricLines, insertLyricLine, removeLyricLine, putLyricLines };
+  return { lyricLines, insertLyricLine, removeLyricLine, putLyricLines, loadLyric, getLyricString };
 };
 
 export default useLyric;
